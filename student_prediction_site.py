@@ -264,7 +264,7 @@ def render_shap_plots(feature_names, input_values, shap_values, base_value):
             st.warning(f"SHAP贡献排序图生成失败：{type(exc).__name__}: {exc}")
 
 
-st.title("学生阅读障碍辅助筛查 · 十算法科研展示")
+st.title("读写能力智能分析")
 st.caption(
     "默认调用交叉验证选出的最佳算法；可手动切换10种算法，并查看当前模型对单个学生的SHAP解释。"
 )
@@ -451,7 +451,7 @@ with prediction_tab:
                 score = positive_probability(bundle, frame)
                 results.append({
                     "算法": name,
-                    "Label=1模型分数": score,##Label=1模型分数
+                    "模型分数": score,##模型分数
                     "预测类别": (
                         "阅读障碍"
                         if score >= float(meta.get("threshold", 0.5))
@@ -468,10 +468,10 @@ with prediction_tab:
             result_df = pd.DataFrame(results)
             selected = result_df[result_df["算法"] == selected_model]
             if not selected.empty:
-                score = float(selected.iloc[0]["Label=1模型分数"])
+                score = float(selected.iloc[0]["模型分数"])
                 a, b, c = st.columns(3)
                 a.metric("当前预测算法", selected_model)
-                b.metric("Label=1模型分数", f"{score:.3f}")
+                b.metric("模型分数", f"{score:.3f}")
                 c.metric(
                     "模型判定",
                     "阅读障碍"
@@ -483,13 +483,13 @@ with prediction_tab:
             st.markdown("**同一输入的算法预测比较**")
             st.dataframe(
                 result_df.sort_values(
-                    "Label=1模型分数", ascending=False
+                    "模型分数", ascending=False
                 ),
                 hide_index=True,
                 use_container_width=True,
             )
             st.bar_chart(
-                result_df.set_index("算法")["Label=1模型分数"]
+                result_df.set_index("算法")["模型分数"]
             )
             st.download_button(
                 "下载本次预测对比CSV",
@@ -635,10 +635,10 @@ with shap_tab:
                 contribution["绝对贡献"] = contribution["SHAP值"].abs()
                 contribution["方向"] = np.where(
                     contribution["SHAP值"] > 0,
-                    "提高Label=1模型分数",
+                    "提高模型分数",
                     np.where(
                         contribution["SHAP值"] < 0,
-                        "降低Label=1模型分数",
+                        "降低模型分数",
                         "影响接近0",
                     ),
                 )
