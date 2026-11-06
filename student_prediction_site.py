@@ -264,7 +264,7 @@ def render_shap_plots(feature_names, input_values, shap_values, base_value):
             st.warning(f"SHAP贡献排序图生成失败：{type(exc).__name__}: {exc}")
 
 
-st.title("读写能力智能分析")
+st.title("阅读水平智能分析")
 st.caption(
     "默认调用交叉验证选出的最佳算法；可手动切换10种算法，并查看当前模型对单个学生的SHAP解释。"
 )
