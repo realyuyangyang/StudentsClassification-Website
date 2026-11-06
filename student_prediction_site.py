@@ -14,7 +14,7 @@ import pandas as pd
 import streamlit as st
 
 st.set_page_config(
-    page_title="读写能力智能分析",
+    page_title="阅读水平智能分析",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
