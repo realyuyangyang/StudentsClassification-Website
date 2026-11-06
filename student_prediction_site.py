@@ -2,7 +2,7 @@
 """学生阅读障碍辅助筛查研究展示网站：10算法预测 + 单个学生SHAP解释。
 
 本程序不会训练模型。模型由已有10算法训练脚本导出；本网站只加载可信的joblib模型包。
-SHAP使用全部学生（默认642名）作为背景，解释当前选中模型的P(Label=1)输出。
+SHAP使用全部学生（默认642名）作为背景，解释当前选中模型的P(阅读障碍)输出。
 """
 import json
 import os
@@ -140,7 +140,7 @@ def positive_probabilities(bundle, values: pd.DataFrame):
     matrix, classifier = _get_bundle_parts(bundle, values)
     classes = list(classifier.classes_)
     if 1 not in classes:
-        raise ValueError(f"模型不包含Label=1：{classes}")
+        raise ValueError(f"模型不包含阅读障碍：{classes}")
     probabilities = np.asarray(classifier.predict_proba(matrix), dtype=float)
     return probabilities[:, classes.index(1)]
 
@@ -161,7 +161,7 @@ def calculate_single_student_shap(
     permutations: int,
     batch_size: int,
 ):
-    """用全部背景学生计算当前模型对P(Label=1)的Permutation SHAP。"""
+    """用全部背景学生计算当前模型对P(阅读障碍)的Permutation SHAP。"""
     import shap
 
     bundle = joblib.load(model_path)
@@ -254,7 +254,7 @@ def render_shap_plots(feature_names, input_values, shap_values, base_value):
             fig, ax = plt.subplots(figsize=(8, 6), dpi=300)
             ax.barh(names, ordered_vals, color=colors)
             ax.axvline(0, color="black", linewidth=0.8)
-            ax.set_xlabel("对Label=1预测分数的SHAP贡献")
+            ax.set_xlabel("对阅读障碍预测分数的SHAP贡献")
             ax.set_title("单个学生14项特征贡献")
             ax.grid(axis="x", alpha=0.2)
             fig.tight_layout(pad=2.0)
@@ -498,14 +498,14 @@ with prediction_tab:
                 mime="text/csv",
             )
             st.info(
-                "该分数是未经概率校准的Label=1模型输出，不能直接解释为真实患病概率。"
-                "网站仅用于科研展示和辅助筛查，不能替代专业诊断。"
+                "本评分基于机器学习模型的分析结果，旨在帮助我们更好地理解和关注孩子的阅读表现。"
+                "我们希望通过科学的探索，让每一份阅读困难都能被温柔地看见，让每一个孩子都能获得适合自己的帮助与鼓励。"
             )
 
 with shap_tab:
     st.subheader("单个学生的SHAP解释")
     st.caption(
-        "解释当前侧边栏所选算法对Label=1（阅读障碍）预测分数的贡献。"
+        "解释当前侧边栏所选算法对 阅读障碍 预测分数的贡献。"
         "正SHAP值提高模型分数，负SHAP值降低模型分数；不代表因果关系。"
     )
 
@@ -707,9 +707,9 @@ with method_tab:
         - **算法**：Logistic Regression、SVM-RBF、Random Forest、XGBoost、CatBoost、
           LightGBM、EBM、Gradient Boosting、Gaussian Naive Bayes、MLPClassifier。
         - **模型选择**：默认使用五个随机种子的OOF平均ROC-AUC最高算法；其余模型可手动切换。
-        - **个体解释**：使用Permutation SHAP解释当前算法的Label=1预测分数。
+        - **个体解释**：使用Permutation SHAP解释当前算法的阅读障碍预测分数。
         - **背景数据**：使用全部训练学生的14项特征；不包含Label、姓名、学校、班级、StudentKey或学生ID。
-        - **解释含义**：正SHAP值表示该特征使模型的Label=1输出高于基准输出；负SHAP值表示使输出低于基准输出。
+        - **解释含义**：正SHAP值表示该特征使模型的阅读障碍输出高于基准输出；负SHAP值表示使输出低于基准输出。
         - **非因果解释**：SHAP解释模型如何使用特征，不证明某个特征导致阅读障碍。
         - **输出限制**：模型分数未经概率校准，尤其训练阶段使用重采样时，不等于真实患病概率。
         - **数据隐私**：背景数据虽然移除了直接身份字段，仍属于学生级敏感数据；请使用私有仓库或受控服务器，不要公开上传。
