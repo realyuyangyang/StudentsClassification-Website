@@ -1,0 +1,7 @@
+SHAP背景数据生成完成：/content/drive/MyDrive/StudentsClassification/data/processed/模型结果汇总_10模型_5种子_5折/网站部署/shap_background.csv
+背景样本数：632
+特征数：14
+缺失值总数：0
+模型文件可用数：10/10
+未重新训练模型；未执行交叉验证。
+背景CSV仅含14项特征，不含Label、StudentKey、姓名、学校、班级或学生ID。

@@ -1,0 +1,11 @@
+﻿算法,状态,重采样,模型文件
+Logistic Regression,完成,SMOTEENN,Logistic Regression.joblib
+SVM-RBF,完成,SMOTEENN,SVM-RBF.joblib
+Random Forest,完成,SMOTEENN,Random Forest.joblib
+XGBoost,完成,SMOTEENN,XGBoost.joblib
+CatBoost,完成,SMOTEENN,CatBoost.joblib
+LightGBM,完成,SMOTEENN,LightGBM.joblib
+EBM,完成,SMOTEENN,EBM.joblib
+Gradient Boosting,完成,SMOTEENN,Gradient Boosting.joblib
+Gaussian Naive Bayes,完成,SMOTEENN,Gaussian Naive Bayes.joblib
+MLPClassifier,完成,SMOTEENN,MLPClassifier.joblib
