@@ -14,7 +14,7 @@ import pandas as pd
 import streamlit as st
 
 st.set_page_config(
-    page_title="学生阅读障碍辅助筛查 | 十算法与SHAP解释",
+    page_title="读写能力智能分析",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -451,7 +451,7 @@ with prediction_tab:
                 score = positive_probability(bundle, frame)
                 results.append({
                     "算法": name,
-                    "Label=1模型分数": score,
+                    "Label=1模型分数": score,##Label=1模型分数
                     "预测类别": (
                         "阅读障碍"
                         if score >= float(meta.get("threshold", 0.5))
